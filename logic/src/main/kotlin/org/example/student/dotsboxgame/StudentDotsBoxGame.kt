@@ -1,6 +1,6 @@
 package org.example.student.dotsboxgame
 
-import uk.ac.bournemouth.ap.dotsandboxeslib.*
+import    uk.ac.bournemouth.ap.dotsandboxeslib.*
 import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.Matrix
 import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.MutableMatrix
 import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.MutableSparseMatrix
