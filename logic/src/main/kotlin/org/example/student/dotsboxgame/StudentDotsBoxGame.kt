@@ -52,48 +52,59 @@ class StudentDotsBoxGame(columns: Int = 5, rows: Int = 5, players: List<Player>)
         override var isDrawn: Boolean = false
         //when line clicked set to true
 
-//find the box to all sides of the lines
+        //find the box to all sides of the lines
         override val adjacentBoxes: Pair<StudentBox?, StudentBox?>
             get() {
-                if (lineY%2==1){//line is vertical
-                    val leftBoxX = lineX-1
+                if (lineY % 2 == 1) {//line is vertical
+                    val leftBoxX = lineX - 1
                     val rightBoxX = lineX
-                    val boxY = lineY/2
-                }else {//line is horizontal
-                    val topBoxY = lineY/2-1
-                    val bottomBoxY = lineY/2
+                    val boxY = lineY / 2
+                } else {//line is horizontal
+                    val topBoxY = lineY / 2 - 1
+                    val bottomBoxY = lineY / 2
                     val boxX = lineX
                 }
 
 
 
-        //WILL CHANGE THE COLOUR OF THE LINES ON THE GAME
-        override fun drawLine() {
-            TODO("Implement the logic for a player drawing a line. Don't forget to inform the listeners (fireGameChange, fireGameOver)")
-            // NOTE read the documentation in the interface, you must also update the current player.
-            //check if lines are drawn
-            //see if this line is already drawn
-            //set is drawn (boolean)
-            //store if box is completed
-            //check if bounding line are drawn for boxes
-            //update if all boxes completed
-            //change player turn
-            //must call player computer terms
+                //WILL CHANGE THE COLOUR OF THE LINES ON THE GAME
+                override fun drawLine() {
+                    TODO("Implement the logic for a player drawing a line. Don't forget to inform the listeners (fireGameChange, fireGameOver)")
+                    // NOTE read the documentation in the interface, you must also update the current player.
+                    //check if lines are drawn
+                    //see if this line is already drawn
+                    //set is drawn (boolean)
+                    //store if box is completed
+                    //check if bounding line are drawn for boxes
+                    //update if all boxes completed
+                    //change player turn
+                    //must call player computer terms
+                }
+
+
+
+        inner class StudentBox(boxX: Int, boxY: Int) : AbstractBox(boxX, boxY) {
+            //DECIDES WHO OWNS THE BOX CREATED - USING BOUNDING LINE
+            override val owningPlayer: Player? = null
+
+
+            /**
+             * This must be lazy or a getter, otherwise there is a chicken/egg problem with the boxes
+             */
+
+            override val boundingLines: Iterable<DotsAndBoxesGame.Line>
+                get() {
+                    val leftLineX = boxX
+                    val rightLineX = boxX
+                    val topLineX = boxX
+                    val bottomLineX = boxX
+
+                    val leftLineY = boxX
+                    val rightLineY = boxX + 1
+                    val topLineY = boxX * 2
+                    val bottomLineY = boxX * 2 + 2
+
+                }
         }
-    }
-
-
-    inner class StudentBox(boxX: Int, boxY: Int) : AbstractBox(boxX, boxY) {
-        //DECIDES WHO OWNS THE BOX CREATED - USING BOUNDING LINE
-        override val owningPlayer: Player? = null
-
-
-        /**
-         * This must be lazy or a getter, otherwise there is a chicken/egg problem with the boxes
-         */
-
-        override val boundingLines: Iterable<DotsAndBoxesGame.Line>
-            get() = TODO("Look up the correct lines from the game outer class")
-
     }
 }
