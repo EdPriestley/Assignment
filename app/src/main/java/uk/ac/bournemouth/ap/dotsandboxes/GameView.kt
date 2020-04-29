@@ -8,7 +8,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 
-class GameView: View {
+class GameView : View {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -28,8 +28,7 @@ class GameView: View {
 
     val col = 1
     val row = 1
-    var playerOneScore = 0
-    var playerTwoScore = 0
+
 
     //making paint objects so we can paint the grid
     init {
@@ -88,24 +87,77 @@ class GameView: View {
         for (col in 1 until colCount - 1) {
             for (row in 3 until rowCount - 2) {
                 val paint = PlayerLine
-                canvas.drawLine(((col * viewWidth) / colCount), ((row * viewHeight) / rowCount), ((col) * viewWidth / colCount), ((row + 1) * viewHeight / rowCount), paint)
+                canvas.drawLine(
+                    ((col * viewWidth) / colCount),
+                    ((row * viewHeight) / rowCount),
+                    ((col) * viewWidth / colCount),
+                    ((row + 1) * viewHeight / rowCount),
+                    paint
+                               )
             }
         }
         //draw the horizontal lines onto the game board
         for (col in 1 until colCount - 2) {
             for (row in 3 until rowCount - 1) {
                 val paint = PlayerLine
-                canvas.drawLine(((col * viewWidth) / colCount), ((row * viewHeight) / rowCount), ((col + 1) * viewWidth / colCount), ((row) * viewHeight / rowCount), paint)
+                canvas.drawLine(
+                    ((col * viewWidth) / colCount),
+                    ((row * viewHeight) / rowCount),
+                    ((col + 1) * viewWidth / colCount),
+                    ((row) * viewHeight / rowCount),
+                    paint
+                               )
             }
         }
 
 
         //set up the scoreboard
-        canvas.drawText("Player 1: ", (col * viewWidth/colCount),((row * viewHeight) / rowCount),ScoreBoard)
-        canvas.drawText("Player 2: ", (col * viewWidth/colCount),(((row+1) * viewHeight) / rowCount),ScoreBoard)
-        canvas.drawText(playerOneScore.toString(), ((col + 3) * viewWidth/colCount),((row * viewHeight) / rowCount),ScoreBoard)
-        canvas.drawText(playerTwoScore.toString(), ((col + 3)* viewWidth/colCount),(((row + 1)* viewHeight) / rowCount),ScoreBoard)
+        var playerOneScore = 0
+        var playerTwoScore = 0
+        var highScore = 0
 
+        if (playerOneScore > highScore) {
+            highScore = playerOneScore
+        } else if (playerTwoScore > highScore) {
+            highScore = playerTwoScore
+        }
+
+        canvas.drawText(
+            "Player 1: ",
+            (col * viewWidth / colCount),
+            ((row * viewHeight) / rowCount),
+            ScoreBoard
+                       )
+        canvas.drawText(
+            "Player 2: ",
+            (col * viewWidth / colCount),
+            (((row + 1) * viewHeight) / rowCount),
+            ScoreBoard
+                       )
+        canvas.drawText(
+            "High Score: ",
+            (col * viewWidth / colCount),
+            (((row + 2) * viewHeight) / rowCount),
+            ScoreBoard
+                       )
+        canvas.drawText(
+            playerOneScore.toString(),
+            ((col + 3) * viewWidth / colCount),
+            ((row * viewHeight) / rowCount),
+            ScoreBoard
+                       )
+        canvas.drawText(
+            playerTwoScore.toString(),
+            ((col + 3) * viewWidth / colCount),
+            (((row + 1) * viewHeight) / rowCount),
+            ScoreBoard
+                       )
+        canvas.drawText(
+            highScore.toString(),
+            ((col + 3) * viewWidth / colCount),
+            (((row + 2) * viewHeight) / rowCount),
+            ScoreBoard
+                       )
 
 
     }

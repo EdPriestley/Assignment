@@ -1,6 +1,9 @@
 package org.example.student.dotsboxgame
 
-import    uk.ac.bournemouth.ap.dotsandboxeslib.*
+import uk.ac.bournemouth.ap.dotsandboxeslib.AbstractDotsAndBoxesGame
+import uk.ac.bournemouth.ap.dotsandboxeslib.ComputerPlayer
+import uk.ac.bournemouth.ap.dotsandboxeslib.DotsAndBoxesGame
+import uk.ac.bournemouth.ap.dotsandboxeslib.Player
 import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.Matrix
 import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.MutableMatrix
 import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.MutableSparseMatrix
@@ -9,7 +12,6 @@ import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.SparseMatrix
 class StudentDotsBoxGame(columns: Int = 5, rows: Int = 5, players: List<Player>) :
     AbstractDotsAndBoxesGame() {
 
-
     //SETTING UP PLAYER LOGIC
     override val players: List<Player> = players.toList()
     private var currentPlayerIndex: Int = 0
@@ -17,23 +19,16 @@ class StudentDotsBoxGame(columns: Int = 5, rows: Int = 5, players: List<Player>)
         get() = players[currentPlayerIndex]
 
 
-    // NOTE: you may want to me more specific in the box type if you use that type in your class
-    //?????
     override val boxes: Matrix<StudentBox> = MutableMatrix(columns, rows, ::StudentBox)
 
-
-    //Stores OBJECTS(LINE) TO AN ARRAY
     override val lines: SparseMatrix<StudentLine> =
         MutableSparseMatrix(columns + 1, rows * 2 + 1, ::StudentLine) { x, y ->
             y % 2 == 1 || x < columns
         }
 
-
     override var isFinished: Boolean = false
         get() = lines.all { it.isDrawn }
 
-
-    //DECIDES WHEN IT IS THE COMPUTERS TURN - AFTER ABOVE STATEMENT
     override fun playComputerTurns() {
         var current = currentPlayer
         while (current is ComputerPlayer && !isFinished) {
@@ -42,17 +37,11 @@ class StudentDotsBoxGame(columns: Int = 5, rows: Int = 5, players: List<Player>)
         }
     }
 
-
-    /**
-     * This is an inner class as it needs to refer to the game to be able to look up the correct
-     * lines and boxes. Alternatively you can have a game property that does the same thing without
-     * it being an inner class.
-     */
     inner class StudentLine(lineX: Int, lineY: Int) : AbstractLine(lineX, lineY) {
         override var isDrawn: Boolean = false
         //when line clicked set to true
 
-        //find the box to all sides of the lines
+
         override val adjacentBoxes: Pair<StudentBox?, StudentBox?>
             get() {
                 if (lineY % 2 == 1) {//line is vertical
@@ -66,21 +55,7 @@ class StudentDotsBoxGame(columns: Int = 5, rows: Int = 5, players: List<Player>)
                 }
 
 
-
-                //WILL CHANGE THE COLOUR OF THE LINES ON THE GAME
-                override fun drawLine() {
-                    TODO("Implement the logic for a player drawing a line. Don't forget to inform the listeners (fireGameChange, fireGameOver)")
-                    // NOTE read the documentation in the interface, you must also update the current player.
-                    //check if lines are drawn
-                    //see if this line is already drawn
-                    //set is drawn (boolean)
-                    //store if box is completed
-                    //check if bounding line are drawn for boxes
-                    //update if all boxes completed
-                    //change player turn
-                    //must call player computer terms
-                }
-
+            }
 
 
         inner class StudentBox(boxX: Int, boxY: Int) : AbstractBox(boxX, boxY) {
@@ -107,4 +82,48 @@ class StudentDotsBoxGame(columns: Int = 5, rows: Int = 5, players: List<Player>)
                 }
         }
     }
+
+
+    override fun drawLine() {
+        // Implement the logic for a player drawing a line. Don't forget to inform the listeners (fireGameChange, fireGameOver)")
+        // NOTE read the documentation in the interface, you must also update the current player.
+        //check if lines are drawn
+        val  lineSelected = studentLine().isDrawn
+        if (isDrawn == false) {
+            isDrawn == true
+        } else {
+            //display message saying line is already selected
+        }
+
+        //check if bounding line are drawn for boxes
+
+        //update if all boxes completed
+
+
+        //store if box is completed
+
+
+        //getting player scores and highscores
+        var playerOneScore:Int = boxes.count{ it == 1}
+        var playerTwoScore:Int = boxes.count{ it == 2}
+
+
+
+        //determines players turn and increases players turn
+        var playerTurn: Int = 0
+        if (playerTurn == 24) {
+            playerTurn = 0
+        } else {
+            playerTurn++
+        }
+
+        if (playerTurn % 2 == 1) {//odd number turns
+            currentPlayerIndex = 0
+        } else {//even number turns
+            currentPlayerIndex = 1
+        }
+
+
+    }
+
 }
