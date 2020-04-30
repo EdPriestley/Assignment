@@ -7,6 +7,8 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
+import org.example.student.dotsboxgame.StudentDotsBoxGame
+import uk.ac.bournemouth.ap.dotsandboxeslib.HumanPlayer
 
 class GameView : View {
     constructor(context: Context?) : super(context)
@@ -14,9 +16,14 @@ class GameView : View {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(
         context, attrs, defStyleAttr)
 
+
+
+    // private var myGame: StudentDotsBoxGame = StudentDotsBoxGame(5, 5, listOf(HumanPlayer(), HumanPlayer()))
+
     //declare variables
-    private val colCount = 7
-    private val rowCount = 9
+    private val colCount = 5 //   myGame.columns
+    private val rowCount = 5 // myGame.rows
+
 
     private var gridPaint: Paint = Paint().apply {
         style = Paint.Style.FILL
@@ -139,5 +146,5 @@ class GameView : View {
 
 
 
-
+//     myGame.lines[ clickY, clickLineX].drawline()
 
