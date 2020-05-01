@@ -41,66 +41,60 @@ class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<
         override var isDrawn: Boolean = false
 
         override val adjacentBoxes: Pair<DotsAndBoxesGame.Box?, DotsAndBoxesGame.Box?>
-            get() = {
-                if (lineY % 2 == 1) {//line is vertical
-                    val leftBoxX: Int = lineX - 1
-                    val rightBoxX: Int = lineX
-                    val boxY: Int = lineY / 2
+        get() = {
+             if (lineY % 2 == 1) {//line is vertical
+                    val BoxAX: Int = lineX - 1
+                    val BoxBX: Int = lineX
+                    val BoxAY: Int = lineY / 2
+                    val BoxBY:Int = lineY / 2
                 } else {//line is horizontal
-                    val topBoxY: Int = lineY / 2 - 1
-                    val bottomBoxY: Int = lineY / 2
-                    val boxX: Int = lineX
+                    val BoxAY: Int = lineY / 2 - 1
+                    val BoxBY: Int = lineY / 2
+                    val BoxAX: Int = lineX
+                    val BoxBX: Int = lineX
                 }
 
-                if (lineX = 0) {//no left box
-                    override val leftBoxX = null
-                    override val BoxY = null
-                } else if (lineX = 3) {//no right box
-                    override val rightBoxX = null
-                    override val BoxY = null
-                } else if (lineY = 0) {//no top box
-                    override val topBoxY = null
-                    override val boxX = null
-                } else if (lineY = 6) {//no bottom box
-                    override val bottomBoxY = null
-                    override val boxX = null
+            if (lineX == 0 || lineY == 0) {//no left or top box
+                    return Pair(null, boxes[BoxBX, BoxBY])
+                } else if(lineX == 3 || lineY==6) {//no right or bottom box
+                    return Pair(boxes[BoxAX, BoxAY], null)
                 }
-
-                return Pair(boxes[leftBoxX, leftBoxY], boxes[leftBoxX, leftBoxY])
-            }
+                else
+                return Pair<boxes[BoxAX, BoxAY], boxes[BoxBX, BoxBY]>
+        }
 
 
         override fun drawLine() {
-            // Implement the logic for a player drawing a line. Don't forget to inform the listeners (fireGameChange, fireGameOver)")
-            // NOTE read the documentation in the interface, you must also update the current player.
             //check if lines are drawn
-            //  val lineSelected = isDrawn
             if (isDrawn == true) {
                 throw Exception("Line already drawn")
             } else {
-
                 isDrawn = true
+            }
 
-                //check if bounding line are drawn for boxes
+            //reset if all boxes are complete
+            if (lines.all { true }){
+                lines.all { false }
 
-                //update if all boxes completed
+            //store if box is completed
+            if(boundingLine.isdrawn == true && currentPlayer == players[0]) {
+                //assign box to player 0
+            }else{
+                //assign box to player 1
+            }
 
-
-                //store if box is completed
-
-
-                //determines players turn and increases players turn
-                var playerTurn: Int = 0
-                if (playerTurn == 24) {
-                    playerTurn = 0
-                } else {
-                    playerTurn++
-                }
-                if (playerTurn % 2 == 1) {//odd number turns
-                    currentPlayerIndex = 0
-                } else {//even number turns
-                    currentPlayerIndex = 1
-                }
+            //determines players turn and increases players turn
+            var playerTurn: Int = 0
+            if (playerTurn == 24) {
+                playerTurn = 0
+            } else {
+                playerTurn++
+            }
+            if (playerTurn % 2 == 1) {//odd number turns
+                currentPlayerIndex = 0
+            } else {//even number turns
+                currentPlayerIndex = 1
+            }
             }
         }
     }
@@ -110,11 +104,19 @@ class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<
             override val owningPlayer: Player? = null
 
             override val boundingLines: Iterable<DotsAndBoxesGame.Line>
-                get()  = listOf {
-                    lines[val leftLineX = boxX;val leftLineY = boxY/2+1]
-                    lines[val rightLineX = boxX+1;val rightLineY = boxY/2+1]
-                    lines[val topLineX = boxX;val topLineY = boxY*2]
-                    lines[val bottomLineX = boxX;val bottomLineY = boxY*2+2]
+                get() {
+                    var boundingList = listOf {
+
+                        //left line
+                        lines[boxX, boxY / 2 + 1]
+                        //right line
+                        lines[boxX + 1, boxY / 2 + 1]
+                        //top line
+                        lines[boxX, boxY * 2]
+                        //bottom line
+                        lines[boxX, boxY * 2 + 2]
+                    }
+                    return boundingList
                 }
 
     }
