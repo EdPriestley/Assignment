@@ -12,7 +12,6 @@ import uk.ac.bournemouth.ap.dotsandboxeslib.matrix.SparseMatrix
 class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<Player>) :
     AbstractDotsAndBoxesGame() {
 
-    //SETTING UP PLAYER LOGIC
     override val players: List<Player> = players.toList()
     private var currentPlayerIndex: Int = 0
     override val currentPlayer: Player
@@ -21,13 +20,16 @@ class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<
 
     override val boxes: Matrix<DotsAndBoxesGame.Box> = MutableMatrix(columns, rows, ::StudentBox)
 
+
     override val lines: SparseMatrix<StudentLine> =
         MutableSparseMatrix(columns + 1, rows * 2 + 1, ::StudentLine) { x, y ->
             y % 2 == 1 || x < columns
         }
 
-    override var isFinished: Boolean = false
+
+    override val isFinished: Boolean
         get() = lines.all { it.isDrawn }
+
 
     override fun playComputerTurns() {
         var current = currentPlayer
@@ -37,64 +39,56 @@ class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<
         }
     }
 
+
     inner class StudentLine(lineX: Int, lineY: Int) : AbstractLine(lineX, lineY) {
         override var isDrawn: Boolean = false
+        private var playerTurn: Int = 0
+
         override val adjacentBoxes: Pair<DotsAndBoxesGame.Box?, DotsAndBoxesGame.Box?>
             get() = findBoxes()
 
         private fun findBoxes(): Pair<DotsAndBoxesGame.Box?, DotsAndBoxesGame.Box?> {
-
-
-            val BoxAX: Int
-            val BoxBX: Int
-            val BoxAY: Int
-            val BoxBY: Int
+            val boxAX: Int
+            val boxBX: Int
+            val boxAY: Int
+            val boxBY: Int
 
             if (lineY % 2 == 1) {//line is vertical
-                BoxAX = lineX - 1
-                BoxBX = lineX
-                BoxAY = lineY / 2
-                BoxBY = lineY / 2
+                boxAX = lineX - 1
+                boxBX = lineX
+                boxAY = lineY / 2
+                boxBY = lineY / 2
             } else {//line is horizontal
-                BoxAY = lineY / 2 - 1
-                BoxBY = lineY / 2
-                BoxAX = lineX
-                BoxBX = lineX
+                boxAY = lineY / 2 - 1
+                boxBY = lineY / 2
+                boxAX = lineX
+                boxBX = lineX
             }
 
             val boxA: DotsAndBoxesGame.Box?
             val boxB: DotsAndBoxesGame.Box?
 
-
             if (lineX == 0 || lineY == 0) {//no left or top box
 
                 boxA = null
-                boxB = boxes[BoxBX, BoxBY]
+                boxB = boxes[boxBX, boxBY]
             } else if (lineX == 3 || lineY == 6) {//no right or bottom box
-                boxA = boxes[BoxAX, BoxAY]
+                boxA = boxes[boxAX, boxAY]
                 boxB = null
             } else {
-                boxA = boxes[BoxAX, BoxAY]
-                boxB = boxes[BoxBX, BoxBY]
+                boxA = boxes[boxAX, boxAY]
+                boxB = boxes[boxBX, boxBY]
             }
             return Pair(boxA, boxB)
         }
 
-
-        var playerTurn: Int = 0
-        var playerOneScore = 0
-        var playerTwoScore = 0
-        var highScore = 0
-
-
         override fun drawLine() {
             //check if lines are drawn
-            if (isDrawn == true) {
+            if (isDrawn) {
                 throw Exception("Line already drawn")
             } else {
-                isDrawn = true
+                isDrawn
             }
-
 
             //reset if all boxes are complete
             if (lines.all { true }) {
@@ -102,8 +96,8 @@ class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<
             }
 
             //store if box is completed
-            var box1 = adjacentBoxes.first
-            var box2 = adjacentBoxes.second
+            val box1 = adjacentBoxes.first
+            val box2 = adjacentBoxes.second
             if (box1 != null) {
                 if (box1.boundingLines.all() { b -> b.isDrawn }) {
                     box1.owningPlayer = currentPlayer
@@ -122,28 +116,29 @@ class StudentDotsBoxGame(val columns: Int = 5, val rows: Int = 5, players: List<
             } else {
                 playerTurn++
             }
-            if (playerTurn % 2 == 1) {//odd number turns
-                currentPlayerIndex = 0
+            currentPlayerIndex = if (playerTurn % 2 == 1) {//odd number turns
+                0
             } else {//even number turns
-                currentPlayerIndex = 1
+                1
             }
 
         }
     }
 
-        inner class StudentBox(boxX: Int, boxY: Int) : AbstractBox(boxX, boxY) {
-            //DECIDES WHO OWNS THE BOX CREATED - USING BOUNDING LINE
-            override var owningPlayer: Player? = null
-            override val boundingLines: Iterable<DotsAndBoxesGame.Line>
-                get() = listOf (//left line
-                                lines[boxX, boxY *2 +1],
-                                //right line
-                                lines[boxX + 1, boxY * 2 + 1],
-                                //top line
-                                lines[boxX, boxY * 2],
-                                //bottom line
-                                lines[boxX, boxY * 2 + 2])
-
-        }
+    inner class StudentBox(boxX: Int, boxY: Int) : AbstractBox(boxX, boxY) {
+        //DECIDES WHO OWNS THE BOX CREATED - USING BOUNDING LINE
+        override var owningPlayer: Player? = null
+        override val boundingLines: Iterable<DotsAndBoxesGame.Line>
+            get() = listOf(//left line
+                lines[boxX, boxY * 2 + 1],
+                //right line
+                lines[boxX + 1, boxY * 2 + 1],
+                //top line
+                lines[boxX, boxY * 2],
+                //bottom line
+                lines[boxX, boxY * 2 + 2]
+                          )
 
     }
+
+}
